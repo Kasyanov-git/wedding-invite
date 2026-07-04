@@ -76,7 +76,7 @@
 .second-day-text p,
 .rsvp-intro,
 .closing-text {
-    font-family: var(--font-subtitle);
+    font-family: var(--);
 }
 
 html {
@@ -511,7 +511,7 @@ body.envelope-fallback-active .envelope-fallback {
 .intro-text {
     max-width: 640px;
     margin: 0 auto;
-    font-family: var(--font-subtitle);
+    font-family: var(--font-script);
     font-size: 1.2rem;
     color: var(--text);
     line-height: 1.8;
