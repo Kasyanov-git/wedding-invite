@@ -1425,7 +1425,7 @@ body.envelope-fallback-active .envelope-fallback {
 
     .hero-section {
         justify-content: flex-end;
-        padding-bottom: 16vh;
+        padding-bottom: 4vh;
         border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
 
