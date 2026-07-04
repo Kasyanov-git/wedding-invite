@@ -222,25 +222,23 @@ body.video-ready .fabric-fallback {
    по горизонтали, чтобы конверт полностью помещался на экране.
    Вместо transform: scale используем реальные размеры — так не появляется
    лишнего горизонтального прокрута и не ломается общий масштаб страницы. */
-@media (max-width: 768px) {
+/* @media (max-width: 770px) {
     .envelope-video {
         width: 99vw;
         height: 99vh;
         object-fit: contain;
     }
-}
+} */
 
 @media (max-width: 480px) {
     .envelope-video {
-        width: 98vw;
-        height: 98vh;
+        width: 240vw;
     }
 }
 
 @media (max-width: 360px) {
     .envelope-video {
-        width: 97vw;
-        height: 97vh;
+        width: 230vw;
     }
 }
 
