@@ -503,6 +503,24 @@ body.envelope-fallback-active .envelope-fallback {
 /* ─────────────────────────────────────────
    Основной контент
    ───────────────────────────────────────── */
+
+   .intro-section {
+    text-align: center;
+}
+
+.intro-text {
+    max-width: 640px;
+    margin: 0 auto;
+    font-family: var(--font-subtitle);
+    font-size: 1.2rem;
+    color: var(--text);
+    line-height: 1.8;
+}
+
+.intro-text p + p {
+    margin-top: 1.2rem;
+}
+
 .invitation-content {
     position: relative;
     z-index: 1;
@@ -1425,7 +1443,7 @@ body.envelope-fallback-active .envelope-fallback {
 
     .hero-section {
         justify-content: flex-end;
-        padding-bottom: 4vh;
+        padding-bottom: 8vh;
         border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
 
