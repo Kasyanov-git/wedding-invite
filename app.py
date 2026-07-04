@@ -29,7 +29,7 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 # ───────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "wedding.db"))
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "2026")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "wedding2025")
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.secret_key = os.environ.get("SECRET_KEY", "wedding-invite-secret-key-change-me")
@@ -152,12 +152,6 @@ LOGIN_TEMPLATE = """
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-        .hint {
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            opacity: 0.8;
-        }
     </style>
 </head>
 <body>
@@ -175,7 +169,6 @@ LOGIN_TEMPLATE = """
             </div>
             <button type="submit">Войти</button>
         </form>
-        <p class="hint">По умолчанию пароль: 2026. Смените его через переменную окружения ADMIN_PASSWORD.</p>
     </div>
 </body>
 </html>
@@ -203,10 +196,6 @@ def init_db():
             guest_names TEXT,
             second_day TEXT,
             drinks TEXT,
-            food_preferences TEXT,
-            allergies TEXT,
-            wishes TEXT,
-            contact TEXT,
             created_at TEXT NOT NULL
         )
         """
@@ -293,9 +282,8 @@ def submit_rsvp():
     cursor = conn.cursor()
     cursor.execute(
         """
-        INSERT INTO rsvp (full_name, attendance, guests_count, guest_names, second_day, drinks,
-                          food_preferences, allergies, wishes, contact, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO rsvp (full_name, attendance, guests_count, guest_names, second_day, drinks, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         """,
         (
             full_name,
@@ -304,10 +292,6 @@ def submit_rsvp():
             (data.get("guest_names") or "").strip(),
             (data.get("second_day") or "").strip(),
             (data.get("drinks") or "").strip(),
-            (data.get("food_preferences") or "").strip(),
-            (data.get("allergies") or "").strip(),
-            (data.get("wishes") or "").strip(),
-            (data.get("contact") or "").strip(),
             now_iso(),
         ),
     )
@@ -350,10 +334,6 @@ def export_excel():
         "Имена гостей",
         "Второй день",
         "Напитки",
-        "Предпочтения по еде",
-        "Аллергии",
-        "Пожелания",
-        "Контакт",
         "Дата отправки",
     ]
 
@@ -383,10 +363,6 @@ def export_excel():
             row["guest_names"],
             row["second_day"],
             row["drinks"],
-            row["food_preferences"],
-            row["allergies"],
-            row["wishes"],
-            row["contact"],
             row["created_at"],
         ]
         for col, value in enumerate(values, 1):
@@ -435,14 +411,12 @@ def export_csv():
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow([
-        "ID", "ФИО", "Участие", "Количество гостей", "Имена гостей", "Второй день", "Напитки",
-        "Предпочтения по еде", "Аллергии", "Пожелания", "Контакт", "Дата отправки"
+        "ID", "ФИО", "Участие", "Количество гостей", "Имена гостей", "Второй день", "Напитки", "Дата отправки"
     ])
     for row in rows:
         writer.writerow([
             row["id"], row["full_name"], row["attendance"], row["guests_count"],
-            row["guest_names"], row["second_day"], row["drinks"], row["food_preferences"], row["allergies"],
-            row["wishes"], row["contact"], row["created_at"]
+            row["guest_names"], row["second_day"], row["drinks"], row["created_at"]
         ])
 
     response = Response(output.getvalue(), mimetype="text/csv; charset=utf-8-sig")
@@ -605,10 +579,6 @@ def admin_panel():
                     <th>Имена гостей</th>
                     <th>Второй день</th>
                     <th>Напитки</th>
-                    <th>Еда</th>
-                    <th>Аллергии</th>
-                    <th>Пожелания</th>
-                    <th>Контакт</th>
                     <th>Дата</th>
                 </tr>
             </thead>
@@ -640,10 +610,6 @@ def admin_panel():
                         {% endif %}
                     </td>
                     <td>{{ r.drinks }}</td>
-                    <td>{{ r.food_preferences }}</td>
-                    <td>{{ r.allergies }}</td>
-                    <td>{{ r.wishes }}</td>
-                    <td>{{ r.contact }}</td>
                     <td>{{ r.created_at }}</td>
                 </tr>
                 {% endfor %}

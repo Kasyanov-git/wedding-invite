@@ -16,7 +16,24 @@
     const video = document.getElementById('bg-video');
 
     // ─────────────────────────────────────
-    // 0. Видео-фон: проверка и fallback
+    // 0. Защита от горизонтального сдвига и «застревания» зума
+    // ─────────────────────────────────────
+    (function protectHorizontalCenter() {
+        function resetHorizontalScroll() {
+            if (window.scrollX !== 0) {
+                window.scrollTo(0, window.scrollY);
+            }
+        }
+        window.addEventListener('scroll', resetHorizontalScroll, { passive: true });
+        window.addEventListener('resize', resetHorizontalScroll, { passive: true });
+        // iOS Safari после фокуса на input может оставить страницу сдвинутой/зумированной
+        document.addEventListener('focusout', () => {
+            setTimeout(resetHorizontalScroll, 50);
+        });
+    })();
+
+    // ─────────────────────────────────────
+    // 1. Видео-фон: проверка и fallback
     // ─────────────────────────────────────
     if (video) {
         const showVideo = () => {
@@ -47,7 +64,7 @@
     }
 
     // ─────────────────────────────────────
-    // 1. Видео-интро + CSS-fallback
+    // 2. Видео-интро + CSS-fallback
     // ─────────────────────────────────────
     const introVideo = document.getElementById('envelope-intro');
     const fallbackEnvelope = document.querySelector('.envelope-fallback .envelope');
@@ -145,7 +162,7 @@
     }
 
     // ─────────────────────────────────────
-    // 2. Обратный отсчёт до даты
+    // 3. Обратный отсчёт до даты
     // ─────────────────────────────────────
     const weddingDate = new Date('2026-09-11T16:00:00').getTime();
     const countdownEl = document.getElementById('countdown');
@@ -184,7 +201,7 @@
     setInterval(updateCountdown, 60000);
 
     // ─────────────────────────────────────
-    // 3. Анимации появления блоков при скролле
+    // 4. Анимации появления блоков при скролле
     // ─────────────────────────────────────
     function initScrollAnimations() {
         const sections = document.querySelectorAll('.section');
@@ -207,7 +224,7 @@
     }
 
     // ─────────────────────────────────────
-    // 4. Обработка формы RSVP
+    // 5. Обработка формы RSVP
     // ─────────────────────────────────────
     if (form) {
         form.addEventListener('submit', async (e) => {
@@ -225,10 +242,6 @@
                 guest_names: guestNames.join(', '),
                 second_day: formData.get('second_day')?.toString() || '',
                 drinks: collectCheckboxes('drinks'),
-                food_preferences: collectCheckboxes('food_preferences'),
-                allergies: formData.get('allergies')?.toString().trim(),
-                wishes: formData.get('wishes')?.toString().trim(),
-                contact: formData.get('contact')?.toString().trim(),
             };
 
             if (!data.full_name || !data.attendance) {
@@ -289,7 +302,7 @@
     }
 
     // ─────────────────────────────────────
-    // 5. Динамическое поведение формы
+    // 6. Динамическое поведение формы
     // ─────────────────────────────────────
     const attendanceInputs = document.querySelectorAll('input[name="attendance"]');
     const guestsCountInput = document.getElementById('guests_count');
@@ -298,7 +311,7 @@
 
     function clampGuestsCount() {
         let value = parseInt(guestsCountInput.value, 10) || 1;
-        value = Math.max(1, Math.min(value, 10));
+        value = Math.max(1, Math.min(value, 5));
         guestsCountInput.value = value;
         return value;
     }
@@ -371,7 +384,7 @@
                 guestsCountInput.value = 1;
                 guestsCountInput.disabled = true;
             } else if (input.checked) {
-                guestsCountInput.value = Math.max(1, Math.min(parseInt(guestsCountInput.value) || 1, 10));
+                guestsCountInput.value = Math.max(1, Math.min(parseInt(guestsCountInput.value) || 1, 5));
                 guestsCountInput.disabled = false;
             }
             updateGuestNames();

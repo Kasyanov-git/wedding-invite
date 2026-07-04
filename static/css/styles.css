@@ -18,9 +18,10 @@
     --text-light: #4a4a4a;
     --white: #FFFFFF;
 
-    --font-script: 'Sacramento', 'Great Vibes', cursive;
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Montserrat', 'Segoe UI', sans-serif;
+    --font-script: 'Marggraff Kursiv Zarte', cursive;
+    --font-serif: 'Marggraff Kursiv Zarte', Georgia, serif;
+    --font-sans: 'Segoe UI', sans-serif;
+    --font-subtitle: 'Akademie Alte', Georgia, serif;
 
     --radius: 24px;
     --radius-lg: 36px;
@@ -37,9 +38,53 @@
     padding: 0;
 }
 
+/* ─────────────────────────────────────────
+   Локальные шрифты
+   ───────────────────────────────────────── */
+@font-face {
+    font-family: 'Marggraff Kursiv Zarte';
+    src: url('../fonts/Marggraff Kursiv Zarte.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Vetrino';
+    src: url('../fonts/Vetrino.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Akademie Alte';
+    src: url('../fonts/Akademie Alte.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Подзаголовки и пожелания — Akademie Alte */
+.hero-pretitle,
+.hero-invitation,
+.date-full,
+.date-countdown,
+.location-address,
+.wish-text h3,
+.wish-text p,
+.second-day-text p,
+.rsvp-intro,
+.closing-text {
+    font-family: var(--font-subtitle);
+}
+
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -47,6 +92,8 @@ body {
     color: var(--text);
     background: var(--cream);
     min-height: 100vh;
+    position: relative;
+    width: 100%;
     overflow-x: hidden;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -162,11 +209,39 @@ body.video-ready .fabric-fallback {
 
 .envelope-video {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    transform: translate(-50%, -50%);
     object-fit: cover;
     pointer-events: none;
+}
+
+/* На мобильных устройствах видео-интро уменьшается и центрируется
+   по горизонтали, чтобы конверт полностью помещался на экране.
+   Вместо transform: scale используем реальные размеры — так не появляется
+   лишнего горизонтального прокрута и не ломается общий масштаб страницы. */
+@media (max-width: 768px) {
+    .envelope-video {
+        width: 99vw;
+        height: 99vh;
+        object-fit: contain;
+    }
+}
+
+@media (max-width: 480px) {
+    .envelope-video {
+        width: 98vw;
+        height: 98vh;
+    }
+}
+
+@media (max-width: 360px) {
+    .envelope-video {
+        width: 97vw;
+        height: 97vh;
+    }
 }
 
 .envelope-flash {
@@ -468,7 +543,7 @@ body.envelope-fallback-active .envelope-fallback {
 .section-title {
     font-family: var(--font-serif);
     font-size: 2.2rem;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--text);
     text-align: center;
     margin-bottom: 2rem;
@@ -488,7 +563,6 @@ body.envelope-fallback-active .envelope-fallback {
 }
 
 .section-title::before {
-    content: '';
     display: block;
     font-size: 1rem;
     color: var(--text);
@@ -538,12 +612,14 @@ body.envelope-fallback-active .envelope-fallback {
     min-height: 100dvh;
     position: relative;
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: center;
     overflow: hidden;
     margin: -2rem -1rem 1.5rem;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
     box-shadow: var(--shadow-premium);
+    padding-bottom: 12vh;
 }
 
 .hero-visual {
@@ -586,7 +662,7 @@ body.envelope-fallback-active .envelope-fallback {
     inset: 0;
     background:
         radial-gradient(ellipse at center, transparent 0%, rgba(74, 63, 58, 0.25) 100%),
-        linear-gradient(180deg, rgba(74, 63, 58, 0.3) 0%, transparent 30%, transparent 60%, rgba(74, 63, 58, 0.4) 100%);
+        linear-gradient(180deg, rgba(74, 63, 58, 0.25) 0%, transparent 25%, transparent 45%, rgba(74, 63, 58, 0.55) 100%);
     z-index: 1;
 }
 
@@ -626,7 +702,7 @@ body.envelope-fallback-active .envelope-fallback {
 .hero-ornament.bottom { margin-top: 1.5rem; }
 
 .hero-pretitle {
-    font-family: var(--font-sans);
+    font-family: var(--font-subtitle);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.25em;
@@ -671,7 +747,7 @@ body.envelope-fallback-active .envelope-fallback {
     font-family: var(--font-serif);
     font-size: 1.1rem;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     color: rgba(255, 255, 255, 0.9);
 }
 
@@ -680,7 +756,7 @@ body.envelope-fallback-active .envelope-fallback {
     max-width: 480px;
     margin: 0 auto;
     line-height: 1.8;
-    font-weight: 300;
+    font-weight: 400;
     opacity: 0.95;
 }
 
@@ -745,7 +821,7 @@ body.envelope-fallback-active .envelope-fallback {
     font-family: var(--font-serif);
     font-size: 1.3rem;
     letter-spacing: 0.15em;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .calendar-body {
@@ -763,8 +839,8 @@ body.envelope-fallback-active .envelope-fallback {
     text-align: center;
     font-size: 0.7rem;
     color: var(--text-light);
-    text-transform: uppercase;
-    font-weight: 600;
+    /* text-transform: uppercase; */
+    font-weight: 400;
     letter-spacing: 0.05em;
 }
 
@@ -779,6 +855,7 @@ body.envelope-fallback-active .envelope-fallback {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-serif);
     font-size: 0.9rem;
     color: var(--text);
     border-radius: 50%;
@@ -792,14 +869,14 @@ body.envelope-fallback-active .envelope-fallback {
 .days span.highlighted {
     background: var(--text);
     color: var(--white);
-    font-weight: 600;
+    font-weight: 400;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
 
 .date-full {
     text-align: center;
-    font-family: var(--font-serif);
+    font-family: var(--font-subtitle);
     font-size: 1.4rem;
     color: var(--coffee);
     margin-bottom: 0.6rem;
@@ -810,7 +887,7 @@ body.envelope-fallback-active .envelope-fallback {
     text-align: center;
     font-size: 1rem;
     color: var(--text-light);
-    font-weight: 300;
+    font-weight: 400;
 }
 
 /* ─────────────────────────────────────────
@@ -841,7 +918,7 @@ body.envelope-fallback-active .envelope-fallback {
     padding: 1rem 1.8rem;
     border-radius: 50px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 400;
     margin: 0 auto;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
@@ -908,7 +985,7 @@ body.envelope-fallback-active .envelope-fallback {
     font-family: var(--font-serif);
     font-size: 1.2rem;
     color: var(--text);
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 0.3rem;
 }
 
@@ -917,7 +994,7 @@ body.envelope-fallback-active .envelope-fallback {
     font-size: 1.2rem;
     color: var(--coffee);
     margin-bottom: 0.4rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .timeline-content p {
@@ -955,11 +1032,11 @@ body.envelope-fallback-active .envelope-fallback {
 }
 
 .wish-text h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-subtitle);
     font-size: 1.2rem;
     color: var(--text);
     margin-bottom: 0.4rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .wish-text p {
@@ -990,13 +1067,14 @@ body.envelope-fallback-active .envelope-fallback {
 }
 
 .form-group label {
-    font-weight: 500;
+    font-weight: 400;
     color: var(--coffee);
     font-size: 0.95rem;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
+.form-group select,
 .form-group textarea {
     width: 100%;
     padding: 1rem 1.2rem;
@@ -1004,17 +1082,31 @@ body.envelope-fallback-active .envelope-fallback {
     border-radius: var(--radius);
     background: rgba(255, 255, 255, 0.72);
     font-family: var(--font-sans);
-    font-size: 1rem;
     color: var(--text);
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     outline: none;
+    /* Жёстко 16px, чтобы iOS Safari не делал авто-зум при фокусе на input,
+       после которого страница часто «застревает» сдвинутой влево. */
+    font-size: 16px;
 }
 
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
     border-color: rgba(0, 0, 0, 0.35);
     background: rgba(255, 255, 255, 0.92);
     box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2rem;
+    padding-right: 2.8rem;
+    cursor: pointer;
 }
 
 .form-group textarea {
@@ -1130,7 +1222,7 @@ body.envelope-fallback-active .envelope-fallback {
     color: var(--white);
     font-family: var(--font-sans);
     font-size: 1.05rem;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
@@ -1333,28 +1425,63 @@ body.envelope-fallback-active .envelope-fallback {
         font-size: 15px;
     }
 
+    .hero-section {
+        justify-content: flex-end;
+        padding-bottom: 16vh;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .hero-content {
+        padding: 1.5rem 1rem;
+    }
+
+    .hero-illustration {
+        margin-bottom: 1rem;
+    }
+
+    .hero-illustration img,
+    .hero-illustration svg {
+        max-width: 110px;
+        max-height: 90px;
+    }
+
+    .hero-ornament.top {
+        margin-bottom: 1rem;
+    }
+
+    .hero-pretitle {
+        font-size: 0.75rem;
+        margin-bottom: 0.8rem;
+    }
+
     .hero-names {
-        font-size: 3.8rem;
+        font-size: 3.2rem;
     }
 
     .hero-names .ampersand {
-        font-size: 2.6rem;
-    }
-
-    .hero-section {
-        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        font-size: 2.2rem;
+        margin: 0.2rem 0;
     }
 
     .hero-date-divider .divider-line {
         width: 30px;
     }
 
+    .hero-date-divider .divider-text {
+        font-size: 0.95rem;
+    }
+
     .hero-invitation {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        max-width: 340px;
+    }
+
+    .hero-ornament.bottom {
+        margin-top: 1rem;
     }
 
     .scroll-hint {
-        bottom: 1.5rem;
+        bottom: 1rem;
     }
 
     .radio-group,
@@ -1372,12 +1499,6 @@ body.envelope-fallback-active .envelope-fallback {
     .block-illustration svg {
         max-width: 180px;
         max-height: 140px;
-    }
-
-    .hero-illustration img,
-    .hero-illustration svg {
-        max-width: 150px;
-        max-height: 120px;
     }
 }
 
